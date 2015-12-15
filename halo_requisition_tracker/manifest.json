@@ -1,0 +1,35 @@
+{
+  "name": "Halo Requisition Tracker",
+  "version": "1.0",
+  "description": "Generates a list of all obtained requisitions for use with the requisition tracking spreadsheet.",
+  "background": {
+    "scripts": ["jquery-min.js","background.js"],
+    "persistent": false
+  },
+  "page_action" :
+  {
+    "default_icon" : "icon-18.png",
+    "default_title" : "Copy Requisition List"
+  },
+  "permissions" : [
+	"declarativeContent",
+	"storage",
+	"notifications"
+  ],
+  "content_scripts":[{
+	"js": ["jquery-min.js", "script.js"],
+	"matches": [
+		"https://www.halowaypoint.com/en-ca/games/halo-5-guardians/xbox-one/requisitions/categories/customization*",
+		"https://www.halowaypoint.com/en-ca/games/halo-5-guardians/xbox-one/requisitions/categories/loadout*",
+		"https://www.halowaypoint.com/en-ca/games/halo-5-guardians/xbox-one/requisitions/categories/powerandvehicle*"
+		]
+  }],
+  "web_accessible_resources": [
+    "icon-48.png"
+  ],
+  "icons" : {
+    "48" : "icon-48.png",
+	"128" : "icon-128.png"
+  },
+  "manifest_version": 2
+}
