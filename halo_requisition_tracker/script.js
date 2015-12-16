@@ -1,4 +1,4 @@
-//Only run any of this if the url contains a get variable named parse (Which gets added by the extension while parsing)
+﻿//Only run any of this if the url contains a get variable named parse (Which gets added by the extension while parsing)
 if (decodeURIComponent(window.location.search.substring(1)).indexOf("parse=") != -1){
 	var name = ""; //Req item name
 	var subcategory = ""; //Subcategory name
@@ -15,31 +15,37 @@ if (decodeURIComponent(window.location.search.substring(1)).indexOf("parse=") !=
 		//We're going to remove each subcategory as we come upon it for the first time (For updating!). We'll store them here
 		var foundCategory = []
 
+		//Check for the power weapon / vehicle page
+		var isCerts = (decodeURIComponent(window.location).indexOf("powerandvehicle") != -1);
+
 		//For each req card on the page
 		$('div.card button').each(
 			function(){
 				//Only ones we have
 				if($(this).data('have-owned') == "True"){
-					//For some reason all the weapons don't actually have a subcategory name, so if it's blank we change it to loadout
-					subcategory = $(this).data('subcategory') == "" ? "Loadout" : $(this).data('subcategory');
-					//If it's the first time we've seen this subcategory, empty it
-					if (foundCategory.indexOf(subcategory) == -1){
-						foundCategory.push(subcategory);
-						haveList[subcategory]= [];
+					//Make sure we're certified if its the power weapons and vehicle page
+					if (!isCerts || (isCerts && $(this).data('has-certification') == "True")){
+						//For some reason all the weapons don't actually have a subcategory name, so if it's blank we change it to loadout
+						subcategory = $(this).data('subcategory') == "" ? "Loadout" : $(this).data('subcategory');
+						//If it's the first time we've seen this subcategory, empty it
+						if (foundCategory.indexOf(subcategory) == -1){
+							foundCategory.push(subcategory);
+							haveList[subcategory]= [];
+						}
+						//If the subcategory itsn't in the list, we add it
+						if (haveList[subcategory] === undefined){
+							haveList[subcategory] = [];
+						}
+						//Lookup the pretty name from the list above
+						if ($(this).data('id') in lookup){
+							name = lookup[$(this).data('id')];
+						}else{
+							//No pretty name. It's all in caps, has broken ' character and trailing spaces. We'll fix that.
+							name =  String($(this).data('name')).trim().toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace('’','\'');
+						}
+						//Add an array of [id,name] to the subcategory
+						haveList[subcategory].push([String($(this).data('id')),name]);
 					}
-					//If the subcategory itsn't in the list, we add it
-					if (haveList[subcategory] === undefined){
-						haveList[subcategory] = [];
-					}
-					//Lookup the pretty name from the list above
-					if ($(this).data('id') in lookup){
-						name = lookup[$(this).data('id')];
-					}else{
-						//No pretty name. It's all in caps, has broken ' character and trailing spaces. We'll fix that.
-						name =  String($(this).data('name')).trim().toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' ').replace('’','\'');
-					}
-					//Add an array of [id,name] to the subcategory
-					haveList[subcategory].push([String($(this).data('id')),name]);
 				}
 			}
 		);

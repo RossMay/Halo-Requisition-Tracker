@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(function() {
       {
          conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: { urlContains: 'www.halowaypoint.com/en-ca/games/halo-5-guardians/xbox-one/requisitions/categories/' }
+            pageUrl: { urlMatches: '.*halowaypoint.com/.*/games/halo-5-guardians/xbox-one/requisitions/categories/.*' }
           })
         ], 
         actions: [ new chrome.declarativeContent.ShowPageAction() ]
