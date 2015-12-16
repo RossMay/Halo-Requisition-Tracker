@@ -1,7 +1,8 @@
 {
   "name": "Halo Requisition Tracker",
-  "version": "1.0",
+  "version": "1.2",
   "description": "Generates a list of all obtained requisitions for use with the requisition tracking spreadsheet.",
+  "author": "Ross May",
   "background": {
     "scripts": ["jquery-min.js","background.js"],
     "persistent": false
@@ -9,12 +10,13 @@
   "page_action" :
   {
     "default_icon" : "icon-18.png",
-    "default_title" : "Copy Requisition List"
+    "default_title" : "Parse Requisition List"
   },
   "permissions" : [
 	"declarativeContent",
 	"storage",
-	"notifications"
+	"notifications",
+	"tabs"
   ],
   "content_scripts":[{
 	"js": ["jquery-min.js", "script.js"],
